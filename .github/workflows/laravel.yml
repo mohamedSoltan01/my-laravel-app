@@ -36,7 +36,8 @@ jobs:
           echo 'DB_PASSWORD=${{ secrets.DB_PASSWORD }}' >> .env
 
       - name: Deploy to Railway
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }} # Railway token from GitHub Secrets
         run: |
           npm install -g @railway/cli
-          railway login --ci ${{ secrets.RAILWAY_TOKEN }}
           railway up
