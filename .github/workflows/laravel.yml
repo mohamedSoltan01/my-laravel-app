@@ -26,18 +26,26 @@ jobs:
       - name: Configure .env
         run: |
           cp .env.example .env
-          php artisan key:generate --show > key.txt
           sed -i "s|APP_KEY=.*|APP_KEY=${{ secrets.APP_KEY }}|" .env
+          sed -i "s|APP_URL=.*|APP_URL=${{ secrets.APP_URL }}|" .env
           sed -i "s|DB_CONNECTION=.*|DB_CONNECTION=${{ secrets.DB_CONNECTION }}|" .env
           sed -i "s|DB_HOST=.*|DB_HOST=${{ secrets.DB_HOST }}|" .env
           sed -i "s|DB_PORT=.*|DB_PORT=${{ secrets.DB_PORT }}|" .env
           sed -i "s|DB_DATABASE=.*|DB_DATABASE=${{ secrets.DB_DATABASE }}|" .env
           sed -i "s|DB_USERNAME=.*|DB_USERNAME=${{ secrets.DB_USERNAME }}|" .env
           sed -i "s|DB_PASSWORD=.*|DB_PASSWORD=${{ secrets.DB_PASSWORD }}|" .env
-          sed -i "s|APP_URL=.*|APP_URL=${{ secrets.APP_URL }}|" .env
 
       - name: Run Migrations
         run: php artisan migrate --force
+        env:
+          DB_CONNECTION: ${{ secrets.DB_CONNECTION }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_DATABASE: ${{ secrets.DB_DATABASE }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          APP_KEY: ${{ secrets.APP_KEY }}
+          APP_URL: ${{ secrets.APP_URL }}
 
       - name: Deploy to Railway
         run: |
