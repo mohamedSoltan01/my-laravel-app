@@ -37,7 +37,8 @@ jobs:
 
       - name: Deploy to Railway
         env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }} # Railway token from GitHub Secrets
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_ENV: production
         run: |
           npm install -g @railway/cli
           railway up
