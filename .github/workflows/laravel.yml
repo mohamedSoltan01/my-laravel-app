@@ -25,9 +25,18 @@ jobs:
 
       - name: Configure .env
         run: |
-          # Create .env file from scratch
-          echo "APP_KEY=${{ secrets.APP_KEY }}" >> .env
-          echo "APP_URL=${{ secrets.APP_URL }}" >> .env
-          echo "DB_CONNECTION=${{ secrets.DB_CONNECTION }}" >> .env
-          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
-          echo "DB
+          # Create .env file safely using single quotes to avoid shell issues
+          echo 'APP_KEY=${{ secrets.APP_KEY }}' >> .env
+          echo 'APP_URL=${{ secrets.APP_URL }}' >> .env
+          echo 'DB_CONNECTION=${{ secrets.DB_CONNECTION }}' >> .env
+          echo 'DB_HOST=${{ secrets.DB_HOST }}' >> .env
+          echo 'DB_PORT=${{ secrets.DB_PORT }}' >> .env
+          echo 'DB_DATABASE=${{ secrets.DB_DATABASE }}' >> .env
+          echo 'DB_USERNAME=${{ secrets.DB_USERNAME }}' >> .env
+          echo 'DB_PASSWORD=${{ secrets.DB_PASSWORD }}' >> .env
+
+      - name: Deploy to Railway
+        run: |
+          npm install -g railway
+          railway login --ci ${{ secrets.RAILWAY_TOKEN }}
+          railway up
